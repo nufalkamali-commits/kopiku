@@ -18,10 +18,7 @@ class _HalamanLoginState extends State<HalamanLogin> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              TemaWarna.coklatTua,
-              TemaWarna.latarGelap,
-            ],
+            colors: [TemaWarna.coklatTua, TemaWarna.latarGelap],
           ),
         ),
         child: SafeArea(
@@ -36,8 +33,11 @@ class _HalamanLoginState extends State<HalamanLogin> {
                     color: TemaWarna.emasKopi.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.coffee_maker_rounded, 
-                    size: 80, color: TemaWarna.emasKopi),
+                  child: const Icon(
+                    Icons.coffee_maker_rounded,
+                    size: 80,
+                    color: TemaWarna.emasKopi,
+                  ),
                 ),
                 const SizedBox(height: 24),
                 Text(
@@ -46,7 +46,11 @@ class _HalamanLoginState extends State<HalamanLogin> {
                 ),
                 Text(
                   'The Art of Perfect Brewing',
-                  style: TemaTeks.montserrat(14, FontWeight.w300, TemaWarna.abuAbu),
+                  style: TemaTeks.montserrat(
+                    14,
+                    FontWeight.w300,
+                    TemaWarna.abuAbu,
+                  ),
                 ),
                 const SizedBox(height: 60),
                 _buildTextField(
@@ -64,7 +68,11 @@ class _HalamanLoginState extends State<HalamanLogin> {
                   alignment: Alignment.centerRight,
                   child: Text(
                     'Forgot Password?',
-                    style: TemaTeks.montserrat(12, FontWeight.w500, TemaWarna.emasKopi),
+                    style: TemaTeks.montserrat(
+                      12,
+                      FontWeight.w500,
+                      TemaWarna.emasKopi,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -83,12 +91,18 @@ class _HalamanLoginState extends State<HalamanLogin> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const Beranda()),
+                        MaterialPageRoute(
+                          builder: (context) => const Beranda(),
+                        ),
                       );
                     },
                     child: Text(
                       'Sign In',
-                      style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.putih),
+                      style: TemaTeks.poppins(
+                        18,
+                        FontWeight.w600,
+                        TemaWarna.putih,
+                      ),
                     ),
                   ),
                 ),
@@ -98,11 +112,19 @@ class _HalamanLoginState extends State<HalamanLogin> {
                   children: [
                     Text(
                       'Don\'t have an account? ',
-                      style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.abuAbu),
+                      style: TemaTeks.montserrat(
+                        14,
+                        FontWeight.w400,
+                        TemaWarna.abuAbu,
+                      ),
                     ),
                     Text(
                       'Register',
-                      style: TemaTeks.montserrat(14, FontWeight.bold, TemaWarna.emasKopi),
+                      style: TemaTeks.montserrat(
+                        14,
+                        FontWeight.bold,
+                        TemaWarna.emasKopi,
+                      ),
                     ),
                   ],
                 ),
@@ -114,7 +136,11 @@ class _HalamanLoginState extends State<HalamanLogin> {
     );
   }
 
-  Widget _buildTextField({required String hint, required IconData icon, bool isPassword = false}) {
+  Widget _buildTextField({
+    required String hint,
+    required IconData icon,
+    bool isPassword = false,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: TemaWarna.kartuGelap,

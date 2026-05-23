@@ -12,13 +12,26 @@ class _BerandaState extends State<Beranda> {
   int _currentIndex = 0;
   String _kategoriTerpilih = 'Coffee';
   
-  List<String> _itemKeranjang = [];
+  List<Map<String, dynamic>> _itemKeranjang = [];
+
+  // State Profil
+  String _namaUser = 'Pecinta Kopi';
+  String _emailUser = 'pecinta.kopi@email.com';
 
   // Data dummy pesanan
   final List<Map<String, String>> _daftarPesanan = [
     {'id': '#KP-001', 'item': 'Kopi Susu Gula Aren (x1)', 'status': 'Sedang Diproses', 'total': 'Rp 25.000', 'tanggal': '17 Mei 2026'},
     {'id': '#KP-002', 'item': 'Matcha Latte (x2)', 'status': 'Selesai', 'total': 'Rp 56.000', 'tanggal': '15 Mei 2026'},
   ];
+
+  int _parseHarga(String harga) {
+    return int.parse(harga.replaceAll(RegExp(r'[^0-9]'), ''));
+  }
+
+  String _formatHarga(int harga) {
+    String hasil = harga.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.');
+    return 'Rp $hasil';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +148,8 @@ class _BerandaState extends State<Beranda> {
             _buildMenuCard('Brownies Coklat', 'Rp 15.000', Icons.cake),
             const SizedBox(height: 12),
             _buildMenuCard('Kentang Goreng', 'Rp 18.000', Icons.fastfood),
+            const SizedBox(height: 12),
+            _buildMenuCard('Pisang Goreng', 'Rp 12.000', Icons.fastfood),
           ],
         ),
       ),
@@ -220,8 +235,9 @@ class _BerandaState extends State<Beranda> {
                 margin: const EdgeInsets.only(bottom: 12),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 child: ListTile(
-                  leading: const Icon(Icons.coffee, color: TemaWarna.coklatTua),
-                  title: Text(_itemKeranjang[index], style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
+                  leading: Icon(_itemKeranjang[index]['ikon'], color: TemaWarna.coklatTua),
+                  title: Text(_itemKeranjang[index]['nama'], style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
+                  subtitle: Text(_itemKeranjang[index]['harga'], style: TemaTeks.montserrat(12, FontWeight.w400, TemaWarna.coklatTua)),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete_outline, color: Colors.red),
                     onPressed: () {
@@ -252,15 +268,82 @@ class _BerandaState extends State<Beranda> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
               ),
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Fitur Checkout akan segera hadir!')),
-                );
+                _tampilkanDialogCheckout();
               },
               child: Text('Checkout (${_itemKeranjang.length} item)', style: TemaTeks.poppins(16, FontWeight.bold, TemaWarna.putih)),
             ),
           ),
         )
       ],
+    );
+  }
+
+  void _tampilkanDialogCheckout() {
+    if (_itemKeranjang.isEmpty) return;
+
+    int total = 0;
+    Map<String, int> hitungItem = {};
+    
+    for (var item in _itemKeranjang) {
+      total += _parseHarga(item['harga']);
+      String nama = item['nama'];
+      hitungItem[nama] = (hitungItem[nama] ?? 0) + 1;
+    }
+
+    String ringkasanItem = hitungItem.entries.map((e) => '${e.key} (x${e.value})').join(', ');
+    if (ringkasanItem.length > 35) {
+      ringkasanItem = ringkasanItem.substring(0, 35) + '...';
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: Text('Konfirmasi Pesanan', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Total Item: ${_itemKeranjang.length}', style: TemaTeks.montserrat(14, FontWeight.w500, TemaWarna.hitam)),
+              const SizedBox(height: 8),
+              Text('Total Harga: ${_formatHarga(total)}', style: TemaTeks.montserrat(16, FontWeight.bold, TemaWarna.orangeKopi)),
+              const SizedBox(height: 16),
+              Text('Apakah Anda yakin ingin melakukan pesanan ini?', style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.hitam)),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Batal', style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: TemaWarna.coklatTua,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _daftarPesanan.insert(0, {
+                    'id': '#KP-00${_daftarPesanan.length + 1}',
+                    'item': ringkasanItem,
+                    'status': 'Sedang Diproses',
+                    'total': _formatHarga(total),
+                    'tanggal': 'Hari Ini',
+                  });
+                  _itemKeranjang.clear();
+                  _currentIndex = 1; // Pindah ke tab Pesanan
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Pesanan berhasil dibuat!')),
+                );
+              },
+              child: Text('Bayar', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.putih)),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -288,19 +371,22 @@ class _BerandaState extends State<Beranda> {
                       backgroundColor: TemaWarna.cream,
                       child: Icon(Icons.person, size: 60, color: TemaWarna.coklatTua),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: TemaWarna.emasKopi,
-                        shape: BoxShape.circle,
+                    GestureDetector(
+                      onTap: _tampilkanEditProfil,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: TemaWarna.emasKopi,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.edit, size: 20, color: TemaWarna.putih),
                       ),
-                      child: const Icon(Icons.edit, size: 20, color: TemaWarna.putih),
                     )
                   ],
                 ),
                 const SizedBox(height: 16),
-                Text('Pecinta Kopi', style: TemaTeks.poppins(22, FontWeight.bold, TemaWarna.putih)),
-                Text('pecinta.kopi@email.com', style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.putih.withOpacity(0.8))),
+                Text(_namaUser, style: TemaTeks.poppins(22, FontWeight.bold, TemaWarna.putih)),
+                Text(_emailUser, style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.putih.withOpacity(0.8))),
                 const SizedBox(height: 24),
                 // Stats
                 Container(
@@ -332,22 +418,255 @@ class _BerandaState extends State<Beranda> {
               children: [
                 Text('Pengaturan Akun', style: TemaTeks.poppins(16, FontWeight.bold, TemaWarna.coklatTua)),
                 const SizedBox(height: 12),
-                _buildProfileMenu(Icons.person_outline, 'Edit Profil', () {}),
-                _buildProfileMenu(Icons.location_on_outlined, 'Alamat Pengiriman', () {}),
-                _buildProfileMenu(Icons.payment_outlined, 'Metode Pembayaran', () {}),
-                _buildProfileMenu(Icons.help_outline, 'Pusat Bantuan', () {}),
+                _buildProfileMenu(Icons.person_outline, 'Edit Profil', _tampilkanEditProfil),
+                _buildProfileMenu(Icons.location_on_outlined, 'Alamat Pengiriman', _tampilkanAlamatPengiriman),
+                _buildProfileMenu(Icons.payment_outlined, 'Metode Pembayaran', _tampilkanMetodePembayaran),
+                _buildProfileMenu(Icons.help_outline, 'Pusat Bantuan', _tampilkanPusatBantuan),
                 const SizedBox(height: 16),
-                _buildProfileMenu(Icons.logout, 'Keluar', () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Anda telah keluar dari sesi.')),
-                  );
-                }, isDestructive: true),
+                _buildProfileMenu(Icons.logout, 'Keluar', _tampilkanDialogKeluar, isDestructive: true),
               ],
             ),
           ),
           const SizedBox(height: 32),
         ],
       ),
+    );
+  }
+
+  void _tampilkanEditProfil() {
+    TextEditingController namaController = TextEditingController(text: _namaUser);
+    TextEditingController emailController = TextEditingController(text: _emailUser);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            top: 24, left: 24, right: 24,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Edit Profil', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+              const SizedBox(height: 16),
+              TextField(
+                controller: namaController,
+                decoration: InputDecoration(
+                  labelText: 'Nama Lengkap',
+                  labelStyle: TemaTeks.montserrat(14, FontWeight.w500, Colors.grey),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: TemaTeks.montserrat(14, FontWeight.w500, Colors.grey),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: TemaWarna.coklatTua,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _namaUser = namaController.text;
+                      _emailUser = emailController.text;
+                    });
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profil berhasil diperbarui')));
+                  },
+                  child: Text('Simpan Perubahan', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.putih)),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _tampilkanAlamatPengiriman() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Alamat Pengiriman', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+              const SizedBox(height: 16),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.location_on, color: TemaWarna.orangeKopi),
+                title: Text('Rumah', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
+                subtitle: Text('Jl. Kopi Susu No. 123, Jakarta Selatan', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+                trailing: const Icon(Icons.check_circle, color: Colors.green),
+              ),
+              const Divider(),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.location_on_outlined, color: Colors.grey),
+                title: Text('Kantor', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
+                subtitle: Text('Gedung Espresso Tower Lt. 5, Jakarta Pusat', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    side: const BorderSide(color: TemaWarna.coklatTua),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fitur Tambah Alamat akan segera hadir!')));
+                  },
+                  child: Text('+ Tambah Alamat Baru', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatTua)),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _tampilkanMetodePembayaran() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Metode Pembayaran', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+              const SizedBox(height: 16),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.account_balance_wallet, color: TemaWarna.emasKopi),
+                title: Text('Saldo KopiKita', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
+                subtitle: Text('Rp 150.000', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+                trailing: const Icon(Icons.check_circle, color: Colors.green),
+              ),
+              const Divider(),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.qr_code_scanner, color: Colors.blue),
+                title: Text('QRIS / E-Wallet', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
+                subtitle: Text('GoPay, OVO, Dana, LinkAja', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+              ),
+              const Divider(),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.credit_card, color: Colors.orange),
+                title: Text('Kartu Kredit / Debit', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
+                subtitle: Text('Visa, Mastercard, JCB', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _tampilkanPusatBantuan() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: Text('Pusat Bantuan', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.chat, color: Colors.green),
+                title: Text('Chat via WhatsApp', style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
+                onTap: () => Navigator.pop(context),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.email, color: Colors.blue),
+                title: Text('Kirim Email', style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
+                onTap: () => Navigator.pop(context),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.book, color: TemaWarna.orangeKopi),
+                title: Text('FAQ (Pertanyaan Umum)', style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
+                onTap: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Tutup', style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey)),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void _tampilkanDialogKeluar() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: Text('Konfirmasi Keluar', style: TemaTeks.poppins(18, FontWeight.bold, Colors.red)),
+          content: Text('Apakah Anda yakin ingin keluar dari akun ini?', style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.hitam)),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Batal', style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () {
+                Navigator.pop(context); // Tutup dialog
+                setState(() {
+                  _currentIndex = 0; // Kembali ke beranda setelah logout (simulasi)
+                });
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Anda telah berhasil keluar.')));
+              },
+              child: Text('Keluar', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.putih)),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -409,7 +728,11 @@ class _BerandaState extends State<Beranda> {
           icon: const Icon(Icons.add_circle, color: TemaWarna.coklatTua, size: 30),
           onPressed: () {
             setState(() {
-              _itemKeranjang.add(nama);
+              _itemKeranjang.add({
+                'nama': nama,
+                'harga': harga,
+                'ikon': ikon,
+              });
             });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
