@@ -199,6 +199,16 @@ class _BerandaState extends State<Beranda> {
               decoration: BoxDecoration(
                 color: TemaWarna.orangeKopi,
                 borderRadius: BorderRadius.circular(15),
+                image: const DecorationImage(
+                  image: NetworkImage(
+                    'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                  ),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black45,
+                    BlendMode.darken,
+                  ),
+                ),
               ),
               child: Center(
                 child: Text(
@@ -215,7 +225,11 @@ class _BerandaState extends State<Beranda> {
             // Kategori Menu
             Text(
               'Kategori',
-              style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.coklatMuda),
+              style: TemaTeks.poppins(
+                18,
+                FontWeight.w600,
+                TemaWarna.coklatMuda,
+              ),
             ),
             const SizedBox(height: 12),
             Row(
@@ -231,7 +245,11 @@ class _BerandaState extends State<Beranda> {
             // Menu Populer
             Text(
               'Menu Populer',
-              style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.coklatMuda),
+              style: TemaTeks.poppins(
+                18,
+                FontWeight.w600,
+                TemaWarna.coklatMuda,
+              ),
             ),
             const SizedBox(height: 12),
             // Daftar Menu
@@ -316,7 +334,11 @@ class _BerandaState extends State<Beranda> {
                 const Divider(height: 24),
                 Text(
                   pesanan['item']!,
-                  style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.coklatMuda),
+                  style: TemaTeks.poppins(
+                    14,
+                    FontWeight.w500,
+                    TemaWarna.coklatMuda,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -362,7 +384,11 @@ class _BerandaState extends State<Beranda> {
             const SizedBox(height: 16),
             Text(
               'Keranjang Anda Kosong',
-              style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.coklatMuda),
+              style: TemaTeks.poppins(
+                18,
+                FontWeight.w600,
+                TemaWarna.coklatMuda,
+              ),
             ),
           ],
         ),
@@ -841,7 +867,11 @@ class _BerandaState extends State<Beranda> {
                 ),
                 title: Text(
                   'Rumah',
-                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                  style: TemaTeks.poppins(
+                    14,
+                    FontWeight.bold,
+                    TemaWarna.coklatMuda,
+                  ),
                 ),
                 subtitle: Text(
                   'Jl. Kopi Susu No. 123, Jakarta Selatan',
@@ -858,7 +888,11 @@ class _BerandaState extends State<Beranda> {
                 ),
                 title: Text(
                   'Kantor',
-                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                  style: TemaTeks.poppins(
+                    14,
+                    FontWeight.bold,
+                    TemaWarna.coklatMuda,
+                  ),
                 ),
                 subtitle: Text(
                   'Gedung Espresso Tower Lt. 5, Jakarta Pusat',
@@ -931,7 +965,11 @@ class _BerandaState extends State<Beranda> {
                 ),
                 title: Text(
                   'Saldo KopiKita',
-                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                  style: TemaTeks.poppins(
+                    14,
+                    FontWeight.bold,
+                    TemaWarna.coklatMuda,
+                  ),
                 ),
                 subtitle: Text(
                   'Rp 150.000',
@@ -945,7 +983,11 @@ class _BerandaState extends State<Beranda> {
                 leading: const Icon(Icons.qr_code_scanner, color: Colors.blue),
                 title: Text(
                   'QRIS / E-Wallet',
-                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                  style: TemaTeks.poppins(
+                    14,
+                    FontWeight.bold,
+                    TemaWarna.coklatMuda,
+                  ),
                 ),
                 subtitle: Text(
                   'GoPay, OVO, Dana, LinkAja',
@@ -958,7 +1000,11 @@ class _BerandaState extends State<Beranda> {
                 leading: const Icon(Icons.credit_card, color: Colors.orange),
                 title: Text(
                   'Kartu Kredit / Debit',
-                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                  style: TemaTeks.poppins(
+                    14,
+                    FontWeight.bold,
+                    TemaWarna.coklatMuda,
+                  ),
                 ),
                 subtitle: Text(
                   'Visa, Mastercard, JCB',
@@ -993,7 +1039,11 @@ class _BerandaState extends State<Beranda> {
                 leading: const Icon(Icons.chat, color: Colors.green),
                 title: Text(
                   'Chat via WhatsApp',
-                  style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.coklatMuda),
+                  style: TemaTeks.poppins(
+                    14,
+                    FontWeight.w500,
+                    TemaWarna.coklatMuda,
+                  ),
                 ),
                 onTap: () => Navigator.pop(context),
               ),
@@ -1002,7 +1052,11 @@ class _BerandaState extends State<Beranda> {
                 leading: const Icon(Icons.email, color: Colors.blue),
                 title: Text(
                   'Kirim Email',
-                  style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.coklatMuda),
+                  style: TemaTeks.poppins(
+                    14,
+                    FontWeight.w500,
+                    TemaWarna.coklatMuda,
+                  ),
                 ),
                 onTap: () => Navigator.pop(context),
               ),
@@ -1011,7 +1065,11 @@ class _BerandaState extends State<Beranda> {
                 leading: const Icon(Icons.book, color: TemaWarna.orangeKopi),
                 title: Text(
                   'FAQ (Pertanyaan Umum)',
-                  style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.coklatMuda),
+                  style: TemaTeks.poppins(
+                    14,
+                    FontWeight.w500,
+                    TemaWarna.coklatMuda,
+                  ),
                 ),
                 onTap: () => Navigator.pop(context),
               ),
@@ -1045,7 +1103,11 @@ class _BerandaState extends State<Beranda> {
           ),
           content: Text(
             'Apakah Anda yakin ingin keluar dari akun ini?',
-            style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.coklatMuda),
+            style: TemaTeks.montserrat(
+              14,
+              FontWeight.w400,
+              TemaWarna.coklatMuda,
+            ),
           ),
           actions: [
             TextButton(
@@ -1248,4 +1310,3 @@ class _BerandaState extends State<Beranda> {
     );
   }
 }
-
