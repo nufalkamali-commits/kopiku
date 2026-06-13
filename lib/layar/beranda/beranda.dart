@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import '../../utilitas/tema_warna.dart';
 
 class Beranda extends StatefulWidget {
@@ -11,7 +11,7 @@ class Beranda extends StatefulWidget {
 class _BerandaState extends State<Beranda> {
   int _currentIndex = 0;
   String _kategoriTerpilih = 'Coffee';
-  
+
   List<Map<String, dynamic>> _itemKeranjang = [];
 
   // State Profil
@@ -20,8 +20,90 @@ class _BerandaState extends State<Beranda> {
 
   // Data dummy pesanan
   final List<Map<String, String>> _daftarPesanan = [
-    {'id': '#KP-001', 'item': 'Kopi Susu Gula Aren (x1)', 'status': 'Sedang Diproses', 'total': 'Rp 25.000', 'tanggal': '17 Mei 2026'},
-    {'id': '#KP-002', 'item': 'Matcha Latte (x2)', 'status': 'Selesai', 'total': 'Rp 56.000', 'tanggal': '15 Mei 2026'},
+    {
+      'id': '#KP-001',
+      'item': 'Kopi Susu Gula Aren (x1)',
+      'status': 'Sedang Diproses',
+      'total': 'Rp 25.000',
+      'tanggal': '17 Mei 2026',
+    },
+    {
+      'id': '#KP-002',
+      'item': 'Matcha Latte (x2)',
+      'status': 'Selesai',
+      'total': 'Rp 56.000',
+      'tanggal': '15 Mei 2026',
+    },
+  ];
+
+  // Data dummy menu
+  final List<Map<String, dynamic>> _semuaMenu = [
+    {
+      'nama': 'Kopi Susu Gula Aren',
+      'harga': 'Rp 25.000',
+      'ikon': Icons.local_cafe,
+      'kategori': 'Coffee',
+    },
+    {
+      'nama': 'Americano',
+      'harga': 'Rp 20.000',
+      'ikon': Icons.coffee,
+      'kategori': 'Coffee',
+    },
+    {
+      'nama': 'Caramel Macchiato',
+      'harga': 'Rp 32.000',
+      'ikon': Icons.local_cafe,
+      'kategori': 'Coffee',
+    },
+    {
+      'nama': 'Matcha Latte',
+      'harga': 'Rp 28.000',
+      'ikon': Icons.emoji_food_beverage,
+      'kategori': 'Non Coffee',
+    },
+    {
+      'nama': 'Thai Tea',
+      'harga': 'Rp 22.000',
+      'ikon': Icons.emoji_food_beverage,
+      'kategori': 'Non Coffee',
+    },
+    {
+      'nama': 'Red Velvet Latte',
+      'harga': 'Rp 26.000',
+      'ikon': Icons.emoji_food_beverage,
+      'kategori': 'Non Coffee',
+    },
+    {
+      'nama': 'Brownies Coklat',
+      'harga': 'Rp 15.000',
+      'ikon': Icons.cake,
+      'kategori': 'Dessert',
+    },
+    {
+      'nama': 'Croissant',
+      'harga': 'Rp 18.000',
+      'ikon': Icons.cake,
+      'kategori': 'Dessert',
+    },
+    {
+      'nama': 'Kentang Goreng',
+      'harga': 'Rp 18.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+    },
+    {
+      'nama': 'Pisang Goreng',
+      'harga': 'Rp 12.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+    },
+    {
+      'nama': 'Cireng Rujak',
+      'harga': 'Rp 15.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+    },
   ];
 
   int _parseHarga(String harga) {
@@ -29,7 +111,10 @@ class _BerandaState extends State<Beranda> {
   }
 
   String _formatHarga(int harga) {
-    String hasil = harga.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.');
+    String hasil = harga.toString().replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]}.',
+    );
     return 'Rp $hasil';
   }
 
@@ -52,7 +137,7 @@ class _BerandaState extends State<Beranda> {
                 const SnackBar(content: Text('Tidak ada notifikasi baru.')),
               );
             },
-          )
+          ),
         ],
       ),
       body: _buildBodyContent(),
@@ -68,8 +153,14 @@ class _BerandaState extends State<Beranda> {
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         items: [
-          const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Beranda'),
-          const BottomNavigationBarItem(icon: Icon(Icons.receipt_long), label: 'Pesanan'),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Beranda',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long),
+            label: 'Pesanan',
+          ),
           BottomNavigationBarItem(
             icon: Badge(
               isLabelVisible: _itemKeranjang.isNotEmpty,
@@ -78,7 +169,10 @@ class _BerandaState extends State<Beranda> {
             ),
             label: 'Keranjang',
           ),
-          const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
         ],
       ),
     );
@@ -109,7 +203,11 @@ class _BerandaState extends State<Beranda> {
               child: Center(
                 child: Text(
                   'Promo Hari Ini: Diskon 20%!',
-                  style: TemaTeks.montserrat(18, FontWeight.bold, TemaWarna.putih),
+                  style: TemaTeks.montserrat(
+                    18,
+                    FontWeight.bold,
+                    TemaWarna.putih,
+                  ),
                 ),
               ),
             ),
@@ -117,7 +215,7 @@ class _BerandaState extends State<Beranda> {
             // Kategori Menu
             Text(
               'Kategori',
-              style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.coklatTua),
+              style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.coklatMuda),
             ),
             const SizedBox(height: 12),
             Row(
@@ -133,23 +231,23 @@ class _BerandaState extends State<Beranda> {
             // Menu Populer
             Text(
               'Menu Populer',
-              style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.coklatTua),
+              style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.coklatMuda),
             ),
             const SizedBox(height: 12),
             // Daftar Menu
-            _buildMenuCard('Kopi Susu Gula Aren', 'Rp 25.000', Icons.local_cafe),
-            const SizedBox(height: 12),
-            _buildMenuCard('Matcha Latte', 'Rp 28.000', Icons.emoji_food_beverage),
-            const SizedBox(height: 12),
-            _buildMenuCard('Americano', 'Rp 20.000', Icons.coffee),
-            const SizedBox(height: 12),
-            _buildMenuCard('Caramel Macchiato', 'Rp 32.000', Icons.local_cafe),
-            const SizedBox(height: 12),
-            _buildMenuCard('Brownies Coklat', 'Rp 15.000', Icons.cake),
-            const SizedBox(height: 12),
-            _buildMenuCard('Kentang Goreng', 'Rp 18.000', Icons.fastfood),
-            const SizedBox(height: 12),
-            _buildMenuCard('Pisang Goreng', 'Rp 12.000', Icons.fastfood),
+            ..._semuaMenu
+                .where((menu) => menu['kategori'] == _kategoriTerpilih)
+                .map(
+                  (menu) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _buildMenuCard(
+                      menu['nama'],
+                      menu['harga'],
+                      menu['ikon'],
+                    ),
+                  ),
+                )
+                .toList(),
           ],
         ),
       ),
@@ -158,7 +256,12 @@ class _BerandaState extends State<Beranda> {
 
   Widget _buildHalamanPesanan() {
     if (_daftarPesanan.isEmpty) {
-      return Center(child: Text('Belum ada pesanan.', style: TemaTeks.poppins(16, FontWeight.w500, TemaWarna.hitam)));
+      return Center(
+        child: Text(
+          'Belum ada pesanan.',
+          style: TemaTeks.poppins(16, FontWeight.w500, TemaWarna.coklatMuda),
+        ),
+      );
     }
     return ListView.builder(
       padding: const EdgeInsets.all(16),
@@ -169,7 +272,9 @@ class _BerandaState extends State<Beranda> {
         return Card(
           elevation: 2,
           margin: const EdgeInsets.only(bottom: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -178,28 +283,61 @@ class _BerandaState extends State<Beranda> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(pesanan['id']!, style: TemaTeks.poppins(16, FontWeight.bold, TemaWarna.coklatTua)),
+                    Text(
+                      pesanan['id']!,
+                      style: TemaTeks.poppins(
+                        16,
+                        FontWeight.bold,
+                        TemaWarna.coklatTua,
+                      ),
+                    ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
-                        color: isSelesai ? Colors.green.withOpacity(0.1) : TemaWarna.orangeKopi.withOpacity(0.1),
+                        color: isSelesai
+                            ? Colors.green.withOpacity(0.1)
+                            : TemaWarna.orangeKopi.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        pesanan['status']!, 
-                        style: TemaTeks.montserrat(12, FontWeight.w600, isSelesai ? Colors.green : TemaWarna.orangeKopi)
+                        pesanan['status']!,
+                        style: TemaTeks.montserrat(
+                          12,
+                          FontWeight.w600,
+                          isSelesai ? Colors.green : TemaWarna.orangeKopi,
+                        ),
                       ),
                     ),
                   ],
                 ),
                 const Divider(height: 24),
-                Text(pesanan['item']!, style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
+                Text(
+                  pesanan['item']!,
+                  style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.coklatMuda),
+                ),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(pesanan['tanggal']!, style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
-                    Text(pesanan['total']!, style: TemaTeks.montserrat(14, FontWeight.bold, TemaWarna.hitam)),
+                    Text(
+                      pesanan['tanggal']!,
+                      style: TemaTeks.montserrat(
+                        12,
+                        FontWeight.w400,
+                        Colors.grey,
+                      ),
+                    ),
+                    Text(
+                      pesanan['total']!,
+                      style: TemaTeks.montserrat(
+                        14,
+                        FontWeight.bold,
+                        TemaWarna.hitam,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -216,9 +354,16 @@ class _BerandaState extends State<Beranda> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.shopping_cart_outlined, size: 80, color: Colors.grey),
+            const Icon(
+              Icons.shopping_cart_outlined,
+              size: 80,
+              color: Colors.grey,
+            ),
             const SizedBox(height: 16),
-            Text('Keranjang Anda Kosong', style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.coklatTua)),
+            Text(
+              'Keranjang Anda Kosong',
+              style: TemaTeks.poppins(18, FontWeight.w600, TemaWarna.coklatMuda),
+            ),
           ],
         ),
       );
@@ -233,11 +378,30 @@ class _BerandaState extends State<Beranda> {
             itemBuilder: (context, index) {
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: ListTile(
-                  leading: Icon(_itemKeranjang[index]['ikon'], color: TemaWarna.coklatTua),
-                  title: Text(_itemKeranjang[index]['nama'], style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
-                  subtitle: Text(_itemKeranjang[index]['harga'], style: TemaTeks.montserrat(12, FontWeight.w400, TemaWarna.coklatTua)),
+                  leading: Icon(
+                    _itemKeranjang[index]['ikon'],
+                    color: TemaWarna.coklatTua,
+                  ),
+                  title: Text(
+                    _itemKeranjang[index]['nama'],
+                    style: TemaTeks.poppins(
+                      14,
+                      FontWeight.w500,
+                      TemaWarna.hitam,
+                    ),
+                  ),
+                  subtitle: Text(
+                    _itemKeranjang[index]['harga'],
+                    style: TemaTeks.montserrat(
+                      12,
+                      FontWeight.w400,
+                      TemaWarna.coklatTua,
+                    ),
+                  ),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete_outline, color: Colors.red),
                     onPressed: () {
@@ -256,8 +420,13 @@ class _BerandaState extends State<Beranda> {
           decoration: BoxDecoration(
             color: TemaWarna.putih,
             boxShadow: [
-              BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 10, offset: const Offset(0, -2))
-            ]
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 10,
+                offset: const Offset(0, -2),
+              ),
+            ],
           ),
           child: SizedBox(
             width: double.infinity,
@@ -265,15 +434,20 @@ class _BerandaState extends State<Beranda> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: TemaWarna.coklatTua,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onPressed: () {
                 _tampilkanDialogCheckout();
               },
-              child: Text('Checkout (${_itemKeranjang.length} item)', style: TemaTeks.poppins(16, FontWeight.bold, TemaWarna.putih)),
+              child: Text(
+                'Checkout (${_itemKeranjang.length} item)',
+                style: TemaTeks.poppins(16, FontWeight.bold, TemaWarna.putih),
+              ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -283,14 +457,16 @@ class _BerandaState extends State<Beranda> {
 
     int total = 0;
     Map<String, int> hitungItem = {};
-    
+
     for (var item in _itemKeranjang) {
       total += _parseHarga(item['harga']);
       String nama = item['nama'];
       hitungItem[nama] = (hitungItem[nama] ?? 0) + 1;
     }
 
-    String ringkasanItem = hitungItem.entries.map((e) => '${e.key} (x${e.value})').join(', ');
+    String ringkasanItem = hitungItem.entries
+        .map((e) => '${e.key} (x${e.value})')
+        .join(', ');
     if (ringkasanItem.length > 35) {
       ringkasanItem = ringkasanItem.substring(0, 35) + '...';
     }
@@ -299,28 +475,59 @@ class _BerandaState extends State<Beranda> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          title: Text('Konfirmasi Pesanan', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Text(
+            'Konfirmasi Pesanan',
+            style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatMuda),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Total Item: ${_itemKeranjang.length}', style: TemaTeks.montserrat(14, FontWeight.w500, TemaWarna.hitam)),
+              Text(
+                'Total Item: ${_itemKeranjang.length}',
+                style: TemaTeks.montserrat(
+                  14,
+                  FontWeight.w500,
+                  TemaWarna.hitam,
+                ),
+              ),
               const SizedBox(height: 8),
-              Text('Total Harga: ${_formatHarga(total)}', style: TemaTeks.montserrat(16, FontWeight.bold, TemaWarna.orangeKopi)),
+              Text(
+                'Total Harga: ${_formatHarga(total)}',
+                style: TemaTeks.montserrat(
+                  16,
+                  FontWeight.bold,
+                  TemaWarna.orangeKopi,
+                ),
+              ),
               const SizedBox(height: 16),
-              Text('Apakah Anda yakin ingin melakukan pesanan ini?', style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.hitam)),
+              Text(
+                'Apakah Anda yakin ingin melakukan pesanan ini?',
+                style: TemaTeks.montserrat(
+                  14,
+                  FontWeight.w400,
+                  TemaWarna.hitam,
+                ),
+              ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Batal', style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey)),
+              child: Text(
+                'Batal',
+                style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey),
+              ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: TemaWarna.coklatTua,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -339,7 +546,10 @@ class _BerandaState extends State<Beranda> {
                   const SnackBar(content: Text('Pesanan berhasil dibuat!')),
                 );
               },
-              child: Text('Bayar', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.putih)),
+              child: Text(
+                'Bayar',
+                style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.putih),
+              ),
             ),
           ],
         );
@@ -353,13 +563,18 @@ class _BerandaState extends State<Beranda> {
         children: [
           // Header Profile
           Container(
-            padding: const EdgeInsets.only(top: 16, bottom: 32, left: 24, right: 24),
+            padding: const EdgeInsets.only(
+              top: 16,
+              bottom: 32,
+              left: 24,
+              right: 24,
+            ),
             decoration: const BoxDecoration(
               color: TemaWarna.coklatTua,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
-              )
+              ),
             ),
             child: Column(
               children: [
@@ -369,7 +584,11 @@ class _BerandaState extends State<Beranda> {
                     const CircleAvatar(
                       radius: 50,
                       backgroundColor: TemaWarna.cream,
-                      child: Icon(Icons.person, size: 60, color: TemaWarna.coklatTua),
+                      child: Icon(
+                        Icons.person,
+                        size: 60,
+                        color: TemaWarna.coklatTua,
+                      ),
                     ),
                     GestureDetector(
                       onTap: _tampilkanEditProfil,
@@ -379,14 +598,28 @@ class _BerandaState extends State<Beranda> {
                           color: TemaWarna.emasKopi,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.edit, size: 20, color: TemaWarna.putih),
+                        child: const Icon(
+                          Icons.edit,
+                          size: 20,
+                          color: TemaWarna.putih,
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                Text(_namaUser, style: TemaTeks.poppins(22, FontWeight.bold, TemaWarna.putih)),
-                Text(_emailUser, style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.putih.withOpacity(0.8))),
+                Text(
+                  _namaUser,
+                  style: TemaTeks.poppins(22, FontWeight.bold, TemaWarna.putih),
+                ),
+                Text(
+                  _emailUser,
+                  style: TemaTeks.montserrat(
+                    14,
+                    FontWeight.w400,
+                    TemaWarna.putih.withOpacity(0.8),
+                  ),
+                ),
                 const SizedBox(height: 24),
                 // Stats
                 Container(
@@ -399,13 +632,25 @@ class _BerandaState extends State<Beranda> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _buildProfileStat('Poin', '125', Icons.stars),
-                      Container(height: 40, width: 1, color: TemaWarna.putih.withOpacity(0.3)),
-                      _buildProfileStat('Status', 'Gold', Icons.workspace_premium),
-                      Container(height: 40, width: 1, color: TemaWarna.putih.withOpacity(0.3)),
+                      Container(
+                        height: 40,
+                        width: 1,
+                        color: TemaWarna.putih.withOpacity(0.3),
+                      ),
+                      _buildProfileStat(
+                        'Status',
+                        'Gold',
+                        Icons.workspace_premium,
+                      ),
+                      Container(
+                        height: 40,
+                        width: 1,
+                        color: TemaWarna.putih.withOpacity(0.3),
+                      ),
                       _buildProfileStat('Pesanan', '12', Icons.receipt_long),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -416,14 +661,42 @@ class _BerandaState extends State<Beranda> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Pengaturan Akun', style: TemaTeks.poppins(16, FontWeight.bold, TemaWarna.coklatTua)),
+                Text(
+                  'Pengaturan Akun',
+                  style: TemaTeks.poppins(
+                    16,
+                    FontWeight.bold,
+                    TemaWarna.coklatTua,
+                  ),
+                ),
                 const SizedBox(height: 12),
-                _buildProfileMenu(Icons.person_outline, 'Edit Profil', _tampilkanEditProfil),
-                _buildProfileMenu(Icons.location_on_outlined, 'Alamat Pengiriman', _tampilkanAlamatPengiriman),
-                _buildProfileMenu(Icons.payment_outlined, 'Metode Pembayaran', _tampilkanMetodePembayaran),
-                _buildProfileMenu(Icons.help_outline, 'Pusat Bantuan', _tampilkanPusatBantuan),
+                _buildProfileMenu(
+                  Icons.person_outline,
+                  'Edit Profil',
+                  _tampilkanEditProfil,
+                ),
+                _buildProfileMenu(
+                  Icons.location_on_outlined,
+                  'Alamat Pengiriman',
+                  _tampilkanAlamatPengiriman,
+                ),
+                _buildProfileMenu(
+                  Icons.payment_outlined,
+                  'Metode Pembayaran',
+                  _tampilkanMetodePembayaran,
+                ),
+                _buildProfileMenu(
+                  Icons.help_outline,
+                  'Pusat Bantuan',
+                  _tampilkanPusatBantuan,
+                ),
                 const SizedBox(height: 16),
-                _buildProfileMenu(Icons.logout, 'Keluar', _tampilkanDialogKeluar, isDestructive: true),
+                _buildProfileMenu(
+                  Icons.logout,
+                  'Keluar',
+                  _tampilkanDialogKeluar,
+                  isDestructive: true,
+                ),
               ],
             ),
           ),
@@ -434,8 +707,12 @@ class _BerandaState extends State<Beranda> {
   }
 
   void _tampilkanEditProfil() {
-    TextEditingController namaController = TextEditingController(text: _namaUser);
-    TextEditingController emailController = TextEditingController(text: _emailUser);
+    TextEditingController namaController = TextEditingController(
+      text: _namaUser,
+    );
+    TextEditingController emailController = TextEditingController(
+      text: _emailUser,
+    );
 
     showModalBottomSheet(
       context: context,
@@ -447,20 +724,35 @@ class _BerandaState extends State<Beranda> {
         return Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
-            top: 24, left: 24, right: 24,
+            top: 24,
+            left: 24,
+            right: 24,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Edit Profil', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+              Text(
+                'Edit Profil',
+                style: TemaTeks.poppins(
+                  18,
+                  FontWeight.bold,
+                  TemaWarna.coklatTua,
+                ),
+              ),
               const SizedBox(height: 16),
               TextField(
                 controller: namaController,
                 decoration: InputDecoration(
                   labelText: 'Nama Lengkap',
-                  labelStyle: TemaTeks.montserrat(14, FontWeight.w500, Colors.grey),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  labelStyle: TemaTeks.montserrat(
+                    14,
+                    FontWeight.w500,
+                    Colors.grey,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -468,8 +760,14 @@ class _BerandaState extends State<Beranda> {
                 controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  labelStyle: TemaTeks.montserrat(14, FontWeight.w500, Colors.grey),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  labelStyle: TemaTeks.montserrat(
+                    14,
+                    FontWeight.w500,
+                    Colors.grey,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -479,7 +777,9 @@ class _BerandaState extends State<Beranda> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: TemaWarna.coklatTua,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   onPressed: () {
                     setState(() {
@@ -487,9 +787,20 @@ class _BerandaState extends State<Beranda> {
                       _emailUser = emailController.text;
                     });
                     Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profil berhasil diperbarui')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Profil berhasil diperbarui'),
+                      ),
+                    );
                   },
-                  child: Text('Simpan Perubahan', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.putih)),
+                  child: Text(
+                    'Simpan Perubahan',
+                    style: TemaTeks.poppins(
+                      14,
+                      FontWeight.bold,
+                      TemaWarna.putih,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -513,21 +824,46 @@ class _BerandaState extends State<Beranda> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Alamat Pengiriman', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+              Text(
+                'Alamat Pengiriman',
+                style: TemaTeks.poppins(
+                  18,
+                  FontWeight.bold,
+                  TemaWarna.coklatTua,
+                ),
+              ),
               const SizedBox(height: 16),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.location_on, color: TemaWarna.orangeKopi),
-                title: Text('Rumah', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
-                subtitle: Text('Jl. Kopi Susu No. 123, Jakarta Selatan', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+                leading: const Icon(
+                  Icons.location_on,
+                  color: TemaWarna.orangeKopi,
+                ),
+                title: Text(
+                  'Rumah',
+                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                ),
+                subtitle: Text(
+                  'Jl. Kopi Susu No. 123, Jakarta Selatan',
+                  style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey),
+                ),
                 trailing: const Icon(Icons.check_circle, color: Colors.green),
               ),
               const Divider(),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.location_on_outlined, color: Colors.grey),
-                title: Text('Kantor', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
-                subtitle: Text('Gedung Espresso Tower Lt. 5, Jakarta Pusat', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+                leading: const Icon(
+                  Icons.location_on_outlined,
+                  color: Colors.grey,
+                ),
+                title: Text(
+                  'Kantor',
+                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                ),
+                subtitle: Text(
+                  'Gedung Espresso Tower Lt. 5, Jakarta Pusat',
+                  style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey),
+                ),
               ),
               const SizedBox(height: 24),
               SizedBox(
@@ -536,13 +872,26 @@ class _BerandaState extends State<Beranda> {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     side: const BorderSide(color: TemaWarna.coklatTua),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fitur Tambah Alamat akan segera hadir!')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Fitur Tambah Alamat akan segera hadir!'),
+                      ),
+                    );
                   },
-                  child: Text('+ Tambah Alamat Baru', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatTua)),
+                  child: Text(
+                    '+ Tambah Alamat Baru',
+                    style: TemaTeks.poppins(
+                      14,
+                      FontWeight.bold,
+                      TemaWarna.coklatTua,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -565,28 +914,56 @@ class _BerandaState extends State<Beranda> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Metode Pembayaran', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+              Text(
+                'Metode Pembayaran',
+                style: TemaTeks.poppins(
+                  18,
+                  FontWeight.bold,
+                  TemaWarna.coklatTua,
+                ),
+              ),
               const SizedBox(height: 16),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.account_balance_wallet, color: TemaWarna.emasKopi),
-                title: Text('Saldo KopiKita', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
-                subtitle: Text('Rp 150.000', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+                leading: const Icon(
+                  Icons.account_balance_wallet,
+                  color: TemaWarna.emasKopi,
+                ),
+                title: Text(
+                  'Saldo KopiKita',
+                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                ),
+                subtitle: Text(
+                  'Rp 150.000',
+                  style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey),
+                ),
                 trailing: const Icon(Icons.check_circle, color: Colors.green),
               ),
               const Divider(),
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.qr_code_scanner, color: Colors.blue),
-                title: Text('QRIS / E-Wallet', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
-                subtitle: Text('GoPay, OVO, Dana, LinkAja', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+                title: Text(
+                  'QRIS / E-Wallet',
+                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                ),
+                subtitle: Text(
+                  'GoPay, OVO, Dana, LinkAja',
+                  style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey),
+                ),
               ),
               const Divider(),
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.credit_card, color: Colors.orange),
-                title: Text('Kartu Kredit / Debit', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.hitam)),
-                subtitle: Text('Visa, Mastercard, JCB', style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey)),
+                title: Text(
+                  'Kartu Kredit / Debit',
+                  style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.coklatMuda),
+                ),
+                subtitle: Text(
+                  'Visa, Mastercard, JCB',
+                  style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey),
+                ),
               ),
             ],
           ),
@@ -600,8 +977,13 @@ class _BerandaState extends State<Beranda> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          title: Text('Pusat Bantuan', style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Text(
+            'Pusat Bantuan',
+            style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatMuda),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -609,19 +991,28 @@ class _BerandaState extends State<Beranda> {
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.chat, color: Colors.green),
-                title: Text('Chat via WhatsApp', style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
+                title: Text(
+                  'Chat via WhatsApp',
+                  style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.coklatMuda),
+                ),
                 onTap: () => Navigator.pop(context),
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.email, color: Colors.blue),
-                title: Text('Kirim Email', style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
+                title: Text(
+                  'Kirim Email',
+                  style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.coklatMuda),
+                ),
                 onTap: () => Navigator.pop(context),
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.book, color: TemaWarna.orangeKopi),
-                title: Text('FAQ (Pertanyaan Umum)', style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.hitam)),
+                title: Text(
+                  'FAQ (Pertanyaan Umum)',
+                  style: TemaTeks.poppins(14, FontWeight.w500, TemaWarna.coklatMuda),
+                ),
                 onTap: () => Navigator.pop(context),
               ),
             ],
@@ -629,8 +1020,11 @@ class _BerandaState extends State<Beranda> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Tutup', style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey)),
-            )
+              child: Text(
+                'Tutup',
+                style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey),
+              ),
+            ),
           ],
         );
       },
@@ -642,27 +1036,46 @@ class _BerandaState extends State<Beranda> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          title: Text('Konfirmasi Keluar', style: TemaTeks.poppins(18, FontWeight.bold, Colors.red)),
-          content: Text('Apakah Anda yakin ingin keluar dari akun ini?', style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.hitam)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Text(
+            'Konfirmasi Keluar',
+            style: TemaTeks.poppins(18, FontWeight.bold, Colors.red),
+          ),
+          content: Text(
+            'Apakah Anda yakin ingin keluar dari akun ini?',
+            style: TemaTeks.montserrat(14, FontWeight.w400, TemaWarna.coklatMuda),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Batal', style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey)),
+              child: Text(
+                'Batal',
+                style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey),
+              ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               onPressed: () {
                 Navigator.pop(context); // Tutup dialog
                 setState(() {
-                  _currentIndex = 0; // Kembali ke beranda setelah logout (simulasi)
+                  _currentIndex =
+                      0; // Kembali ke beranda setelah logout (simulasi)
                 });
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Anda telah berhasil keluar.')));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Anda telah berhasil keluar.')),
+                );
               },
-              child: Text('Keluar', style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.putih)),
+              child: Text(
+                'Keluar',
+                style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.putih),
+              ),
             ),
           ],
         );
@@ -675,32 +1088,63 @@ class _BerandaState extends State<Beranda> {
       children: [
         Icon(icon, color: TemaWarna.emasKopi, size: 28),
         const SizedBox(height: 4),
-        Text(value, style: TemaTeks.poppins(16, FontWeight.bold, TemaWarna.putih)),
-        Text(label, style: TemaTeks.montserrat(12, FontWeight.w400, TemaWarna.putih.withOpacity(0.8))),
+        Text(
+          value,
+          style: TemaTeks.poppins(16, FontWeight.bold, TemaWarna.putih),
+        ),
+        Text(
+          label,
+          style: TemaTeks.montserrat(
+            12,
+            FontWeight.w400,
+            TemaWarna.putih.withOpacity(0.8),
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildProfileMenu(IconData icon, String title, VoidCallback onTap, {bool isDestructive = false}) {
+  Widget _buildProfileMenu(
+    IconData icon,
+    String title,
+    VoidCallback onTap, {
+    bool isDestructive = false,
+  }) {
     return Card(
       elevation: 0,
       color: TemaWarna.putih,
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
-        side: BorderSide(color: isDestructive ? Colors.red.withOpacity(0.3) : Colors.grey.withOpacity(0.1)),
+        side: BorderSide(
+          color: isDestructive
+              ? Colors.red.withOpacity(0.3)
+              : Colors.grey.withOpacity(0.1),
+        ),
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isDestructive ? Colors.red.withOpacity(0.1) : TemaWarna.cream,
+            color: isDestructive
+                ? Colors.red.withOpacity(0.1)
+                : TemaWarna.cream,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(icon, color: isDestructive ? Colors.red : TemaWarna.coklatTua),
+          child: Icon(
+            icon,
+            color: isDestructive ? Colors.red : TemaWarna.coklatTua,
+          ),
         ),
-        title: Text(title, style: TemaTeks.poppins(14, FontWeight.w600, isDestructive ? Colors.red : TemaWarna.hitam)),
+        title: Text(
+          title,
+          style: TemaTeks.poppins(
+            14,
+            FontWeight.w600,
+            isDestructive ? Colors.red : TemaWarna.hitam,
+          ),
+        ),
         trailing: const Icon(Icons.chevron_right, color: Colors.grey),
         onTap: onTap,
       ),
@@ -722,17 +1166,23 @@ class _BerandaState extends State<Beranda> {
           ),
           child: Icon(ikon, color: TemaWarna.coklatTua),
         ),
-        title: Text(nama, style: TemaTeks.poppins(16, FontWeight.w600, TemaWarna.hitam)),
-        subtitle: Text(harga, style: TemaTeks.montserrat(14, FontWeight.bold, TemaWarna.orangeKopi)),
+        title: Text(
+          nama,
+          style: TemaTeks.poppins(16, FontWeight.w600, TemaWarna.coklatMuda),
+        ),
+        subtitle: Text(
+          harga,
+          style: TemaTeks.montserrat(14, FontWeight.bold, TemaWarna.orangeKopi),
+        ),
         trailing: IconButton(
-          icon: const Icon(Icons.add_circle, color: TemaWarna.coklatTua, size: 30),
+          icon: const Icon(
+            Icons.add_circle,
+            color: TemaWarna.coklatTua,
+            size: 30,
+          ),
           onPressed: () {
             setState(() {
-              _itemKeranjang.add({
-                'nama': nama,
-                'harga': harga,
-                'ikon': ikon,
-              });
+              _itemKeranjang.add({'nama': nama, 'harga': harga, 'ikon': ikon});
             });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -775,15 +1225,27 @@ class _BerandaState extends State<Beranda> {
                   color: Colors.grey.withOpacity(0.1),
                   spreadRadius: 1,
                   blurRadius: 5,
-                )
-              ]
+                ),
+              ],
             ),
-            child: Icon(icon, color: isSelected ? TemaWarna.putih : TemaWarna.coklatTua, size: 30),
+            child: Icon(
+              icon,
+              color: isSelected ? TemaWarna.putih : TemaWarna.coklatTua,
+              size: 30,
+            ),
           ),
           const SizedBox(height: 8),
-          Text(judul, style: TemaTeks.montserrat(12, isSelected ? FontWeight.bold : FontWeight.w500, TemaWarna.hitam)),
+          Text(
+            judul,
+            style: TemaTeks.montserrat(
+              12,
+              isSelected ? FontWeight.bold : FontWeight.w500,
+              TemaWarna.hitam,
+            ),
+          ),
         ],
       ),
     );
   }
 }
+

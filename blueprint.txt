@@ -1,0 +1,95 @@
+=================================================================
+             BLUEPRINT APLIKASI KOPIKITA (KONSEP & FITUR)
+=================================================================
+
+1. GAMBARAN UMUM
+-----------------------------------------------------------------
+KopiKita adalah aplikasi pemesanan kopi modern yang dirancang untuk 
+memberikan kemudahan bagi pengguna dalam memesan kopi, melacak
+pesanan, serta mendapatkan pengalaman loyalitas pelanggan (loyalty) 
+yang menyenangkan. Aplikasi ini memiliki antarmuka yang bersih, 
+interaktif, dan mudah digunakan (User-Friendly).
+
+2. STRUKTUR MENU UTAMA (BOTTOM NAVIGATION)
+-----------------------------------------------------------------
+A. Beranda (Home)
+B. Pesanan (Orders)
+C. Keranjang (Cart)
+D. Profil (Profile)
+
+
+3. DETAIL FITUR SAAT INI (SUDAH DIIMPLEMENTASIKAN)
+-----------------------------------------------------------------
+- Beranda: 
+  * Banner Promo dinamis (Diskon, Penawaran Spesial).
+  * Kategori Produk (Coffee, Non-Coffee, Dessert, Snack).
+  * Daftar Menu Populer dengan tombol tambah cepat (+).
+- Keranjang: 
+  * Daftar item yang telah ditambahkan beserta total harga.
+  * Fungsi menghapus item dari keranjang.
+  * Fitur Checkout dengan kalkulasi otomatis dan dialog konfirmasi.
+- Pesanan: 
+  * Daftar riwayat dan status pesanan aktif (Sedang Diproses, Selesai).
+  * ID Pesanan (Order ID) unik, tanggal, dan rincian item.
+- Profil:
+  * Informasi User (Nama, Email, Poin, Status Loyalitas).
+  * Edit Profil (Modal ubah Nama dan Email).
+  * Alamat Pengiriman & Metode Pembayaran.
+  * Pusat Bantuan (FAQ, Email, WhatsApp).
+  * Fitur Keluar (Logout) dengan konfirmasi.
+
+
+4. IDE FITUR TAMBAHAN (UNTUK PENGEMBANGAN SELANJUTNYA)
+-----------------------------------------------------------------
+Berikut adalah fitur-fitur yang bisa ditambahkan ke depannya untuk 
+membuat KopiKita menjadi aplikasi pemesanan standar industri:
+
+A. Kustomisasi Pesanan (Add-ons & Options)
+   Pengguna dapat mengatur takaran pesanannya sebelum masuk keranjang:
+   - Tingkat Kemanisan (Sugar Level: 0%, 50%, 100%)
+   - Tingkat Es (Ice Level: Less, Normal, Extra)
+   - Pilihan Susu (Oat Milk, Almond Milk, Soya)
+   - Extra Shot Espresso atau Topping (Boba, Jelly, dll).
+
+B. Opsi Pengambilan (Delivery vs Pick-up)
+   - Pick-up (Ambil Sendiri): Pesan di aplikasi untuk menghindari antrean, 
+     sistem akan memberi estimasi waktu kapan minuman siap diambil.
+   - Delivery (Pesan Antar): Lacak kurir secara Real-Time menggunakan
+     integrasi Google Maps.
+
+C. Sistem Poin & Loyalitas Terintegrasi (Loyalty Program)
+   - Kumpulkan "Biji Kopi" (Poin) setiap melakukan transaksi.
+   - Halaman khusus untuk menukar poin dengan Voucher Diskon, Merchandise,
+     atau Kopi Gratis.
+   - Tingkatan Membership (Silver, Gold, Platinum) dengan benefit berbeda.
+
+D. Favorit Saya (My Favorites / Re-order)
+   - Fitur "Pesan Lagi" untuk menu yang sering dibeli.
+   - Fitur menyukai (ikon hati) pada menu favorit agar mudah dicari.
+
+E. Otentikasi Lanjutan (Advanced Authentication)
+   - Login / Register menggunakan Google, Apple ID, dan Nomor HP (OTP).
+   - Opsi Login dengan Sidik Jari (Biometric/FaceID) demi keamanan.
+
+F. Notifikasi Push (Push Notifications)
+   - Notifikasi Real-time saat pesanan diproses, dalam perjalanan,
+     dan selesai.
+   - Notifikasi Flash Sale atau Promo Terbatas (Time-limited Promo).
+
+G. Metode Pembayaran Penuh
+   - Integrasi Payment Gateway (Midtrans/Xendit) untuk pembayaran 
+     langsung di dalam aplikasi (GoPay, OVO, ShopeePay, Virtual Account).
+
+H. Tema Gelap (Dark Mode)
+   - Pilihan untuk mengganti tema UI aplikasi menjadi gelap (Dark Mode) 
+     agar lebih nyaman di mata pada malam hari.
+
+
+5. FLOW APLIKASI (ALUR PENGGUNA) TAHAP SELANJUTNYA
+-----------------------------------------------------------------
+1. Splash Screen -> 2. Login/Register -> 3. Beranda -> 
+4. Pilih Item & Kustomisasi -> 5. Masukkan Keranjang -> 
+6. Checkout (Pilih Alamat & Pembayaran) -> 7. Bayar (Payment Gateway) -> 
+8. Halaman Tracking (Melacak) -> 9. Pesanan Tiba / Diambil.
+
+=================================================================

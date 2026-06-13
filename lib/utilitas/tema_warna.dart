@@ -5,6 +5,7 @@ class TemaWarna {
   static const Color latarGelap = Color(0xFF121212);
   static const Color kartuGelap = Color(0xFF1E1E1E);
   static const Color coklatTua = Color(0xFF3E2723);
+  static const Color coklatMuda = Color(0xFFC4A484);
   static const Color emasKopi = Color(0xFFC67C4E);
   static const Color orangeHangat = Color(0xFFED975A);
   static const Color abuAbu = Color(0xFF9E9E9E);
