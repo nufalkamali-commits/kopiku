@@ -43,66 +43,88 @@ class _BerandaState extends State<Beranda> {
       'harga': 'Rp 25.000',
       'ikon': Icons.local_cafe,
       'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=200&q=80',
     },
     {
       'nama': 'Americano',
       'harga': 'Rp 20.000',
       'ikon': Icons.coffee,
       'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1551030173-122aabc4489c?auto=format&fit=crop&w=200&q=80',
     },
     {
       'nama': 'Caramel Macchiato',
       'harga': 'Rp 32.000',
       'ikon': Icons.local_cafe,
       'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&w=200&q=80',
     },
     {
       'nama': 'Matcha Latte',
       'harga': 'Rp 28.000',
       'ikon': Icons.emoji_food_beverage,
       'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&w=200&q=80',
     },
     {
       'nama': 'Thai Tea',
       'harga': 'Rp 22.000',
       'ikon': Icons.emoji_food_beverage,
       'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=200&q=80',
     },
     {
-      'nama': 'Red Velvet Latte',
+      'nama': 'Taro Latte',
       'harga': 'Rp 26.000',
       'ikon': Icons.emoji_food_beverage,
       'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1579888944880-d9ab5c1926bd?auto=format&fit=crop&w=200&q=80',
     },
     {
       'nama': 'Brownies Coklat',
       'harga': 'Rp 15.000',
       'ikon': Icons.cake,
       'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=200&q=80',
     },
     {
       'nama': 'Croissant',
       'harga': 'Rp 18.000',
       'ikon': Icons.cake,
       'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=200&q=80',
     },
     {
       'nama': 'Kentang Goreng',
       'harga': 'Rp 18.000',
       'ikon': Icons.fastfood,
       'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=200&q=80',
     },
     {
       'nama': 'Pisang Goreng',
       'harga': 'Rp 12.000',
       'ikon': Icons.fastfood,
       'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=200&q=80',
     },
     {
-      'nama': 'Cireng Rujak',
-      'harga': 'Rp 15.000',
+      'nama': 'Dimsum',
+      'harga': 'Rp 20.000',
       'ikon': Icons.fastfood,
       'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=200&q=80',
     },
   ];
 
@@ -261,6 +283,7 @@ class _BerandaState extends State<Beranda> {
                     child: _buildMenuCard(
                       menu['nama'],
                       menu['harga'],
+                      menu['gambar'],
                       menu['ikon'],
                     ),
                   ),
@@ -408,9 +431,19 @@ class _BerandaState extends State<Beranda> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: ListTile(
-                  leading: Icon(
-                    _itemKeranjang[index]['ikon'],
-                    color: TemaWarna.coklatTua,
+                  leading: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          _itemKeranjang[index]['gambar'] ??
+                              'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=200&q=80',
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                   title: Text(
                     _itemKeranjang[index]['nama'],
@@ -500,46 +533,188 @@ class _BerandaState extends State<Beranda> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        String _metodeTerpilih = 'QRIS / E-Wallet';
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              title: Text(
+                'Konfirmasi Pesanan',
+                style: TemaTeks.poppins(
+                  18,
+                  FontWeight.bold,
+                  TemaWarna.coklatMuda,
+                ),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Total Item: ${_itemKeranjang.length}',
+                    style: TemaTeks.montserrat(
+                      14,
+                      FontWeight.w500,
+                      TemaWarna.hitam,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Total Harga: ${_formatHarga(total)}',
+                    style: TemaTeks.montserrat(
+                      16,
+                      FontWeight.bold,
+                      TemaWarna.orangeKopi,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Metode Pembayaran:',
+                    style: TemaTeks.montserrat(
+                      14,
+                      FontWeight.w500,
+                      TemaWarna.hitam,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: _metodeTerpilih,
+                        isExpanded: true,
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: TemaWarna.coklatTua,
+                        ),
+                        items:
+                            [
+                                  'Saldo KopiKita',
+                                  'QRIS / E-Wallet',
+                                  'Kartu Kredit / Debit',
+                                ]
+                                .map(
+                                  (m) => DropdownMenuItem(
+                                    value: m,
+                                    child: Text(
+                                      m,
+                                      style: TemaTeks.montserrat(
+                                        14,
+                                        FontWeight.w500,
+                                        TemaWarna.coklatTua,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (val) {
+                          setStateDialog(() {
+                            _metodeTerpilih = val!;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'Batal',
+                    style: TemaTeks.poppins(14, FontWeight.w600, Colors.grey),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: TemaWarna.coklatTua,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    if (_metodeTerpilih == 'QRIS / E-Wallet') {
+                      _tampilkanDialogQRIS(total, ringkasanItem);
+                    } else {
+                      _prosesPesananSelesai(
+                        total,
+                        ringkasanItem,
+                        _metodeTerpilih,
+                      );
+                    }
+                  },
+                  child: Text(
+                    'Lanjut',
+                    style: TemaTeks.poppins(
+                      14,
+                      FontWeight.bold,
+                      TemaWarna.putih,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _tampilkanDialogQRIS(int total, String ringkasanItem) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
           title: Text(
-            'Konfirmasi Pesanan',
-            style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatMuda),
+            'Pembayaran QRIS',
+            textAlign: TextAlign.center,
+            style: TemaTeks.poppins(18, FontWeight.bold, TemaWarna.coklatTua),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Total Item: ${_itemKeranjang.length}',
-                style: TemaTeks.montserrat(
-                  14,
-                  FontWeight.w500,
-                  TemaWarna.hitam,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Total Harga: ${_formatHarga(total)}',
+                'Total Bayar: ${_formatHarga(total)}',
                 style: TemaTeks.montserrat(
                   16,
                   FontWeight.bold,
                   TemaWarna.orangeKopi,
                 ),
               ),
-              const SizedBox(height: 16),
-              Text(
-                'Apakah Anda yakin ingin melakukan pesanan ini?',
-                style: TemaTeks.montserrat(
-                  14,
-                  FontWeight.w400,
-                  TemaWarna.hitam,
+              const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade300),
                 ),
+                child: const Icon(
+                  Icons.qr_code_2,
+                  size: 180,
+                  color: TemaWarna.hitam,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Silakan scan QR Code di atas menggunakan aplikasi E-Wallet pilihan Anda (GoPay, OVO, DANA, dll).',
+                textAlign: TextAlign.center,
+                style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey),
               ),
             ],
           ),
+          actionsAlignment: MainAxisAlignment.spaceBetween,
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -557,23 +732,10 @@ class _BerandaState extends State<Beranda> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
-                setState(() {
-                  _daftarPesanan.insert(0, {
-                    'id': '#KP-00${_daftarPesanan.length + 1}',
-                    'item': ringkasanItem,
-                    'status': 'Sedang Diproses',
-                    'total': _formatHarga(total),
-                    'tanggal': 'Hari Ini',
-                  });
-                  _itemKeranjang.clear();
-                  _currentIndex = 1; // Pindah ke tab Pesanan
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Pesanan berhasil dibuat!')),
-                );
+                _prosesPesananSelesai(total, ringkasanItem, 'QRIS');
               },
               child: Text(
-                'Bayar',
+                'Selesai Bayar',
                 style: TemaTeks.poppins(14, FontWeight.bold, TemaWarna.putih),
               ),
             ),
@@ -581,6 +743,36 @@ class _BerandaState extends State<Beranda> {
         );
       },
     );
+  }
+
+  void _prosesPesananSelesai(int total, String ringkasanItem, String metode) {
+    String idPesanan = '#KP-00${_daftarPesanan.length + 1}';
+    setState(() {
+      _daftarPesanan.insert(0, {
+        'id': idPesanan,
+        'item': ringkasanItem,
+        'status': 'Sedang Diproses',
+        'total': _formatHarga(total),
+        'tanggal': 'Hari Ini',
+      });
+      _itemKeranjang.clear();
+      _currentIndex = 1; // Pindah ke tab Pesanan
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Pesanan berhasil dibuat dengan metode $metode!')),
+    );
+
+    // Otomatis ubah status pesanan menjadi 'Selesai' setelah 1 menit
+    Future.delayed(const Duration(minutes: 1), () {
+      if (mounted) {
+        setState(() {
+          int index = _daftarPesanan.indexWhere((p) => p['id'] == idPesanan);
+          if (index != -1) {
+            _daftarPesanan[index]['status'] = 'Selesai';
+          }
+        });
+      }
+    });
   }
 
   Widget _buildHalamanProfil() {
@@ -1213,7 +1405,12 @@ class _BerandaState extends State<Beranda> {
     );
   }
 
-  Widget _buildMenuCard(String nama, String harga, IconData ikon) {
+  Widget _buildMenuCard(
+    String nama,
+    String harga,
+    String gambar,
+    IconData ikon,
+  ) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -1225,8 +1422,11 @@ class _BerandaState extends State<Beranda> {
           decoration: BoxDecoration(
             color: TemaWarna.coklatTua.withOpacity(0.1),
             borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: NetworkImage(gambar),
+              fit: BoxFit.cover,
+            ),
           ),
-          child: Icon(ikon, color: TemaWarna.coklatTua),
         ),
         title: Text(
           nama,
@@ -1244,7 +1444,12 @@ class _BerandaState extends State<Beranda> {
           ),
           onPressed: () {
             setState(() {
-              _itemKeranjang.add({'nama': nama, 'harga': harga, 'ikon': ikon});
+              _itemKeranjang.add({
+                'nama': nama,
+                'harga': harga,
+                'ikon': ikon,
+                'gambar': gambar,
+              });
             });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
