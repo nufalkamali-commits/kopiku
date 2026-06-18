@@ -38,6 +38,7 @@ class _BerandaState extends State<Beranda> {
 
   // Data dummy menu
   final List<Map<String, dynamic>> _semuaMenu = [
+    // --- Coffee ---
     {
       'nama': 'Kopi Susu Gula Aren',
       'harga': 'Rp 25.000',
@@ -63,6 +64,64 @@ class _BerandaState extends State<Beranda> {
           'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&w=200&q=80',
     },
     {
+      'nama': 'Espresso',
+      'harga': 'Rp 15.000',
+      'ikon': Icons.coffee,
+      'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Cappuccino',
+      'harga': 'Rp 25.000',
+      'ikon': Icons.local_cafe,
+      'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Latte',
+      'harga': 'Rp 24.000',
+      'ikon': Icons.local_cafe,
+      'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Mocha',
+      'harga': 'Rp 28.000',
+      'ikon': Icons.coffee,
+      'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Flat White',
+      'harga': 'Rp 26.000',
+      'ikon': Icons.local_cafe,
+      'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1585494156145-1c60a4fe952b?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Cold Brew',
+      'harga': 'Rp 22.000',
+      'ikon': Icons.coffee_maker,
+      'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Hazelnut Latte',
+      'harga': 'Rp 28.000',
+      'ikon': Icons.local_cafe,
+      'kategori': 'Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=200&q=80',
+    },
+
+    // --- Non Coffee ---
+    {
       'nama': 'Matcha Latte',
       'harga': 'Rp 28.000',
       'ikon': Icons.emoji_food_beverage,
@@ -79,13 +138,71 @@ class _BerandaState extends State<Beranda> {
           'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=200&q=80',
     },
     {
-      'nama': 'Taro Latte',
+      'nama': 'Red Velvet Latte',
       'harga': 'Rp 26.000',
       'ikon': Icons.emoji_food_beverage,
       'kategori': 'Non Coffee',
       'gambar':
-          'https://images.unsplash.com/photo-1579888944880-d9ab5c1926bd?auto=format&fit=crop&w=200&q=80',
+          'https://images.unsplash.com/photo-1620189507195-68309c04c4d0?auto=format&fit=crop&w=200&q=80',
     },
+    {
+      'nama': 'Lemon Tea',
+      'harga': 'Rp 15.000',
+      'ikon': Icons.local_drink,
+      'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Lychee Tea',
+      'harga': 'Rp 18.000',
+      'ikon': Icons.local_drink,
+      'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Peach Tea',
+      'harga': 'Rp 18.000',
+      'ikon': Icons.local_drink,
+      'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1499638673689-79a0b5115d87?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Milk Tea',
+      'harga': 'Rp 20.000',
+      'ikon': Icons.emoji_food_beverage,
+      'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1517093602195-b40af9688b46?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Strawberry Smoothies',
+      'harga': 'Rp 25.000',
+      'ikon': Icons.local_drink,
+      'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Virgin Mojito',
+      'harga': 'Rp 25.000',
+      'ikon': Icons.local_bar,
+      'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Teh Tarik',
+      'harga': 'Rp 18.000',
+      'ikon': Icons.emoji_food_beverage,
+      'kategori': 'Non Coffee',
+      'gambar':
+          'https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=200&q=80',
+    },
+
+    // --- Dessert ---
     {
       'nama': 'Brownies Coklat',
       'harga': 'Rp 15.000',
@@ -102,6 +219,72 @@ class _BerandaState extends State<Beranda> {
       'gambar':
           'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=200&q=80',
     },
+    {
+      'nama': 'Cheese Cake',
+      'harga': 'Rp 25.000',
+      'ikon': Icons.cake,
+      'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1524351199678-941a58a3df50?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Tiramisu',
+      'harga': 'Rp 28.000',
+      'ikon': Icons.cake,
+      'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Red Velvet Cake',
+      'harga': 'Rp 26.000',
+      'ikon': Icons.cake,
+      'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Choco Lava',
+      'harga': 'Rp 22.000',
+      'ikon': Icons.cake,
+      'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Macaron',
+      'harga': 'Rp 15.000',
+      'ikon': Icons.cookie,
+      'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Pancake',
+      'harga': 'Rp 20.000',
+      'ikon': Icons.breakfast_dining,
+      'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Puding Coklat',
+      'harga': 'Rp 15.000',
+      'ikon': Icons.cookie,
+      'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Donat',
+      'harga': 'Rp 12.000',
+      'ikon': Icons.donut_large,
+      'kategori': 'Dessert',
+      'gambar':
+          'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=200&q=80',
+    },
+
+    // --- Snack ---
     {
       'nama': 'Kentang Goreng',
       'harga': 'Rp 18.000',
@@ -120,6 +303,62 @@ class _BerandaState extends State<Beranda> {
     },
     {
       'nama': 'Dimsum',
+      'harga': 'Rp 20.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Onion Rings',
+      'harga': 'Rp 18.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1639024471283-03518883512d?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Nachos',
+      'harga': 'Rp 25.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Chicken Wings',
+      'harga': 'Rp 30.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Sosis Bakar',
+      'harga': 'Rp 20.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Tempe Mendoan',
+      'harga': 'Rp 12.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Jamur Krispi',
+      'harga': 'Rp 18.000',
+      'ikon': Icons.fastfood,
+      'kategori': 'Snack',
+      'gambar':
+          'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+    },
+    {
+      'nama': 'Siomay',
       'harga': 'Rp 20.000',
       'ikon': Icons.fastfood,
       'kategori': 'Snack',
