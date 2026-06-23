@@ -1,4 +1,4 @@
-package com.example.kopi_kita
+package com.kopikitastudio.app
 
 import io.flutter.embedding.android.FlutterActivity
 

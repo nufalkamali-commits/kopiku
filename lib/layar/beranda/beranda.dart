@@ -1,5 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../../utilitas/tema_warna.dart';
+import '../../utilitas/penyimpanan_lokal.dart';
+import '../otentikasi/login.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({Key? key}) : super(key: key);
@@ -12,29 +14,25 @@ class _BerandaState extends State<Beranda> {
   int _currentIndex = 0;
   String _kategoriTerpilih = 'Coffee';
 
+  // Search
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  bool _searchAktif = false;
+
+  // Keranjang
   List<Map<String, dynamic>> _itemKeranjang = [];
 
-  // State Profil
-  String _namaUser = 'Pecinta Kopi';
-  String _emailUser = 'pecinta.kopi@email.com';
+  // Favorit
+  Set<String> _semuaFavorit = {};
 
-  // Data dummy pesanan
-  final List<Map<String, String>> _daftarPesanan = [
-    {
-      'id': '#KP-001',
-      'item': 'Kopi Susu Gula Aren (x1)',
-      'status': 'Sedang Diproses',
-      'total': 'Rp 25.000',
-      'tanggal': '17 Mei 2026',
-    },
-    {
-      'id': '#KP-002',
-      'item': 'Matcha Latte (x2)',
-      'status': 'Selesai',
-      'total': 'Rp 56.000',
-      'tanggal': '15 Mei 2026',
-    },
-  ];
+  // State Profil
+  String _namaUser = '';
+  String _emailUser = '';
+  int _poinUser = 0;
+
+  // Pesanan
+  List<Map<String, String>> _daftarPesanan = [];
+  String _filterPesanan = 'Semua';
 
   // Data dummy menu
   final List<Map<String, dynamic>> _semuaMenu = [
@@ -377,6 +375,27 @@ class _BerandaState extends State<Beranda> {
       (Match m) => '${m[1]}.',
     );
     return 'Rp $hasil';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _muatDataLokal();
+  }
+
+  Future<void> _muatDataLokal() async {
+    final nama = await PenyimpananLokal.getNama();
+    final email = await PenyimpananLokal.getEmail();
+    final pesanan = await PenyimpananLokal.getDaftarPesanan();
+    final poin = await PenyimpananLokal.getPoin();
+    if (mounted) {
+      setState(() {
+        _namaUser = nama.isNotEmpty ? nama : 'Pecinta Kopi';
+        _emailUser = email.isNotEmpty ? email : '-';
+        _daftarPesanan = pesanan;
+        _poinUser = poin;
+      });
+    }
   }
 
   @override
@@ -985,33 +1004,72 @@ class _BerandaState extends State<Beranda> {
   }
 
   void _prosesPesananSelesai(int total, String ringkasanItem, String metode) {
-    String idPesanan = '#KP-00${_daftarPesanan.length + 1}';
+    final now = DateTime.now();
+    final tanggal = '${now.day} ${_namaBulan(now.month)} ${now.year}';
+    String idPesanan =
+        '#KP-${((_daftarPesanan.length + 1)).toString().padLeft(3, '0')}';
+
+    final pesananBaru = <String, String>{
+      'id': idPesanan,
+      'item': ringkasanItem,
+      'status': 'Sedang Diproses',
+      'total': _formatHarga(total),
+      'tanggal': tanggal,
+      'metode': metode,
+    };
+
+    // Simpan ke penyimpanan lokal
+    PenyimpananLokal.simpanPesanan(pesananBaru);
+    // Tambah poin (1 poin per Rp 1.000)
+    final poinBaru = total ~/ 1000;
+    PenyimpananLokal.tambahPoin(poinBaru);
+
     setState(() {
-      _daftarPesanan.insert(0, {
-        'id': idPesanan,
-        'item': ringkasanItem,
-        'status': 'Sedang Diproses',
-        'total': _formatHarga(total),
-        'tanggal': 'Hari Ini',
-      });
+      _daftarPesanan.insert(0, pesananBaru);
+      _poinUser += poinBaru;
       _itemKeranjang.clear();
-      _currentIndex = 1; // Pindah ke tab Pesanan
+      _currentIndex = 1;
     });
+
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Pesanan berhasil dibuat dengan metode $metode!')),
+      SnackBar(
+        content: Text('Pesanan berhasil! +$poinBaru poin ditambahkan 🎉'),
+        backgroundColor: Colors.green.shade700,
+      ),
     );
 
     // Otomatis ubah status pesanan menjadi 'Selesai' setelah 1 menit
     Future.delayed(const Duration(minutes: 1), () {
       if (mounted) {
+        PenyimpananLokal.updateStatusPesanan(idPesanan, 'Selesai');
         setState(() {
           int index = _daftarPesanan.indexWhere((p) => p['id'] == idPesanan);
           if (index != -1) {
-            _daftarPesanan[index]['status'] = 'Selesai';
+            _daftarPesanan[index] = Map.from(_daftarPesanan[index])
+              ..['status'] = 'Selesai';
           }
         });
       }
     });
+  }
+
+  String _namaBulan(int bulan) {
+    const nama = [
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'Mei',
+      'Jun',
+      'Jul',
+      'Ags',
+      'Sep',
+      'Okt',
+      'Nov',
+      'Des',
+    ];
+    return nama[bulan];
   }
 
   Widget _buildHalamanProfil() {
@@ -1088,7 +1146,7 @@ class _BerandaState extends State<Beranda> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildProfileStat('Poin', '125', Icons.stars),
+                      _buildProfileStat('Poin', '$_poinUser', Icons.stars),
                       Container(
                         height: 40,
                         width: 1,
@@ -1096,7 +1154,11 @@ class _BerandaState extends State<Beranda> {
                       ),
                       _buildProfileStat(
                         'Status',
-                        'Gold',
+                        _poinUser >= 500
+                            ? 'Gold'
+                            : _poinUser >= 100
+                            ? 'Silver'
+                            : 'Bronze',
                         Icons.workspace_premium,
                       ),
                       Container(
@@ -1104,7 +1166,11 @@ class _BerandaState extends State<Beranda> {
                         width: 1,
                         color: TemaWarna.putih.withOpacity(0.3),
                       ),
-                      _buildProfileStat('Pesanan', '12', Icons.receipt_long),
+                      _buildProfileStat(
+                        'Pesanan',
+                        '${_daftarPesanan.length}',
+                        Icons.receipt_long,
+                      ),
                     ],
                   ),
                 ),
@@ -1238,15 +1304,22 @@ class _BerandaState extends State<Beranda> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    final namaBaru = namaController.text.trim();
+                    final emailBaru = emailController.text.trim();
+                    await PenyimpananLokal.updateProfil(
+                      nama: namaBaru,
+                      email: emailBaru,
+                    );
                     setState(() {
-                      _namaUser = namaController.text;
-                      _emailUser = emailController.text;
+                      _namaUser = namaBaru;
+                      _emailUser = emailBaru;
                     });
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Profil berhasil diperbarui'),
+                        content: Text('Profil berhasil diperbarui ✅'),
+                        backgroundColor: Colors.green,
                       ),
                     );
                   },
@@ -1269,98 +1342,157 @@ class _BerandaState extends State<Beranda> {
   }
 
   void _tampilkanAlamatPengiriman() {
+    final alamatController = TextEditingController();
+    final labelController = TextEditingController();
+
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Alamat Pengiriman',
-                style: TemaTeks.poppins(
-                  18,
-                  FontWeight.bold,
-                  TemaWarna.coklatTua,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(
-                  Icons.location_on,
-                  color: TemaWarna.orangeKopi,
-                ),
-                title: Text(
-                  'Rumah',
-                  style: TemaTeks.poppins(
-                    14,
-                    FontWeight.bold,
-                    TemaWarna.coklatMuda,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (ctx, setStateSheet) {
+            return FutureBuilder<List<Map<String, String>>>(
+              future: PenyimpananLokal.getDaftarAlamat(),
+              builder: (ctx, snap) {
+                final daftar = snap.data ?? [];
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(ctx).viewInsets.bottom,
+                    top: 24,
+                    left: 24,
+                    right: 24,
                   ),
-                ),
-                subtitle: Text(
-                  'Jl. Kopi Susu No. 123, Jakarta Selatan',
-                  style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey),
-                ),
-                trailing: const Icon(Icons.check_circle, color: Colors.green),
-              ),
-              const Divider(),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(
-                  Icons.location_on_outlined,
-                  color: Colors.grey,
-                ),
-                title: Text(
-                  'Kantor',
-                  style: TemaTeks.poppins(
-                    14,
-                    FontWeight.bold,
-                    TemaWarna.coklatMuda,
-                  ),
-                ),
-                subtitle: Text(
-                  'Gedung Espresso Tower Lt. 5, Jakarta Pusat',
-                  style: TemaTeks.montserrat(12, FontWeight.w400, Colors.grey),
-                ),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: const BorderSide(color: TemaWarna.coklatTua),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Fitur Tambah Alamat akan segera hadir!'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Alamat Pengiriman',
+                        style: TemaTeks.poppins(
+                          18,
+                          FontWeight.bold,
+                          TemaWarna.coklatTua,
+                        ),
                       ),
-                    );
-                  },
-                  child: Text(
-                    '+ Tambah Alamat Baru',
-                    style: TemaTeks.poppins(
-                      14,
-                      FontWeight.bold,
-                      TemaWarna.coklatTua,
-                    ),
+                      const SizedBox(height: 12),
+                      if (daftar.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Text(
+                            'Belum ada alamat tersimpan.',
+                            style: TemaTeks.montserrat(
+                              14,
+                              FontWeight.w400,
+                              Colors.grey,
+                            ),
+                          ),
+                        )
+                      else
+                        ...daftar.asMap().entries.map(
+                          (e) => ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: const Icon(
+                              Icons.location_on,
+                              color: TemaWarna.orangeKopi,
+                            ),
+                            title: Text(
+                              e.value['label'] ?? 'Alamat',
+                              style: TemaTeks.poppins(
+                                14,
+                                FontWeight.bold,
+                                TemaWarna.coklatMuda,
+                              ),
+                            ),
+                            subtitle: Text(
+                              e.value['alamat'] ?? '',
+                              style: TemaTeks.montserrat(
+                                12,
+                                FontWeight.w400,
+                                Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      const Divider(),
+                      TextField(
+                        controller: labelController,
+                        decoration: InputDecoration(
+                          labelText: 'Label (cth: Rumah, Kantor)',
+                          labelStyle: TemaTeks.montserrat(
+                            13,
+                            FontWeight.w400,
+                            Colors.grey,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: alamatController,
+                        decoration: InputDecoration(
+                          labelText: 'Alamat Lengkap',
+                          labelStyle: TemaTeks.montserrat(
+                            13,
+                            FontWeight.w400,
+                            Colors.grey,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: TemaWarna.coklatTua,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (alamatController.text.trim().isEmpty) return;
+                            await PenyimpananLokal.simpanAlamat({
+                              'label': labelController.text.trim().isEmpty
+                                  ? 'Alamat'
+                                  : labelController.text.trim(),
+                              'alamat': alamatController.text.trim(),
+                            });
+                            setStateSheet(() {});
+                            alamatController.clear();
+                            labelController.clear();
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Alamat berhasil disimpan ✅'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Simpan Alamat',
+                            style: TemaTeks.poppins(
+                              14,
+                              FontWeight.bold,
+                              TemaWarna.putih,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
                   ),
-                ),
-              ),
-            ],
-          ),
+                );
+              },
+            );
+          },
         );
       },
     );
@@ -1555,15 +1687,16 @@ class _BerandaState extends State<Beranda> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {
-                Navigator.pop(context); // Tutup dialog
-                setState(() {
-                  _currentIndex =
-                      0; // Kembali ke beranda setelah logout (simulasi)
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Anda telah berhasil keluar.')),
-                );
+              onPressed: () async {
+                Navigator.pop(context);
+                await PenyimpananLokal.logout();
+                if (mounted) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const HalamanLogin()),
+                    (route) => false,
+                  );
+                }
               },
               child: Text(
                 'Keluar',
